@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>jQuery UI Example Page</title>
+        <link type="text/css" href="css/smoothness/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+        <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                buttons = [
+                    {'id': '#get_button',    'type': 'GET'},
+                    {'id': '#post_button',   'type': 'POST'},
+                    {'id': '#put_button',    'type': 'PUT'},
+                    {'id': '#delete_button', 'type': 'DELETE'},
+                ]
+                $.each(buttons, function(i, t) {
+                    $(t.id).button();
+                    $(t.id).click(function() {
+                        $.ajax({
+                            url: 'Collection.php',
+                            data: $('#data').val(),
+                            type: t.type,
+                            success: function(result) {
+                                $('#output_container').css("visibility", "visible");
+                                $('#output_header').text(t.type);
+                                $('#output').text(result);
+                            },
+                            error: function(result) {
+                                $('#output_container').css("visibility", "visible");
+                                $('#output_header').text("ERROR");
+                                $('#output').text(result);                                
+                            }
+                        });
+                    });
+                });            
+            });
+        </script>
+        <style>
+            button {
+                width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="width:800px">
+            <div style="clear: right; text-align: center">
+                <button id="get_button">Get</button>
+                <button id="put_button">Put</button>
+                <button id="post_button">Post</button>
+                <button id="delete_button">Delete</button>
+            </div>
+            <div><textarea id="data" style="width: 100%; height: 200px"></textarea></div>
+            <div id="output_container" style="width: 100%; border-color: #000; border-width: 2px; border-style: dashed; visibility: collapse">
+            <h2 id="output_header"></h2>
+            <pre id="output" style="width: 100%"></pre>
+            </div>
+        </div>
+    </body>
+</html>
